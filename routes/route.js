@@ -70,7 +70,7 @@ myapp.post("/loginpage", async (req, res) => {
   const logindata = await myschimatype.findOne({ email: email });
 
   if (!logindata) {
-    res.json({ msg: "email not found", status: 4560 });
+    res.json({ msg: "email not found", status: 456 });
   } else {
     if (logindata.email === email && logindata.pass === pass) {
       res.json({ msg: "successfully login", status: 240 });
