@@ -4,7 +4,7 @@ const myschimatype = require("../schematypes/globalschematype");
 const myapp = express.Router();
 
 myapp.get("/", function (req, res) {
-  res.send("Hello world satrt");
+  res.send("<h1>Welcome to express.js</h1>");
 });
 
 myapp.use("/user", function (req, res) {
@@ -13,6 +13,9 @@ myapp.use("/user", function (req, res) {
 
 myapp.get("/about", (req, res) => {
   res.send("Welcome");
+});
+myapp.get("/contact", (req, res) => {
+  res.send(req.path);
 });
 
 myapp.get("/alldata", async (req, res) => {
@@ -42,7 +45,7 @@ myapp.delete("/removeUser/:id", async (req, res) => {
 
   const { id } = req.params;
   const deletedata = await myschimatype.findByIdAndDelete({ _id: id });
-  console.log(deletedata);
+  // console.log(deletedata);
   res.status(256).json(deletedata);
 });
 
@@ -60,6 +63,21 @@ myapp.get("/singlereocrd/:id", async (req, res) => {
   const { id } = req.params;
   const sinle = await myschimatype.findById({ _id: id });
   res.status(278).json(sinle);
+});
+
+myapp.post("/loginpage", async (req, res) => {
+  const { email, pass } = req.body;
+  const logindata = await myschimatype.findOne({ email: email });
+
+  if (!logindata) {
+    res.json({ msg: "email not found", status: 4560 });
+  } else {
+    if (logindata.email === email && logindata.pass === pass) {
+      res.json({ msg: "successfully login", status: 240 });
+    } else {
+      res.json({ msg: "email and password not match", status: 466 });
+    }
+  }
 });
 
 module.exports = myapp;
