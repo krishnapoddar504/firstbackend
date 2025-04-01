@@ -5,19 +5,10 @@ const Basictype = new mongoose.Schema({
     type: String,
     require: true,
   },
-  dob: {
-    type: String,
-  },
   email: {
     type: String,
   },
   pass: {
-    type: String,
-  },
-  gender: {
-    type: String,
-  },
-  purl: {
     type: String,
   },
 });

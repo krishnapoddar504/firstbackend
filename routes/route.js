@@ -1,5 +1,6 @@
 const express = require("express");
 const myschimatype = require("../schematypes/globalschematype");
+const productschimatype = require("../schematypes/globalproduct");
 
 const myapp = express.Router();
 
@@ -17,6 +18,38 @@ myapp.get("/about", (req, res) => {
 myapp.get("/contact", (req, res) => {
   res.send(req.path);
 });
+myapp.get("/allproduct", async (req, res) => {
+  const allproductlist = await productschimatype.find();
+  res.send(allproductlist);
+});
+myapp.post("/addproduct", async (req, res) => {
+  const {
+    id,
+    image,
+    company,
+    item_name,
+    original_price,
+    current_price,
+    discount_percentage,
+    return_period,
+    delivery_date,
+    rating,
+  } = req.body;
+  const addingpro = new productschimatype({
+    id,
+    image,
+    company,
+    item_name,
+    original_price,
+    current_price,
+    discount_percentage,
+    return_period,
+    delivery_date,
+    rating,
+  });
+  await addingpro.save();
+  res.status(210).json({ message: "data successfully add", statuscode: 583 });
+});
 
 myapp.get("/alldata", async (req, res) => {
   const alldatalist = await myschimatype.find();
@@ -24,14 +57,11 @@ myapp.get("/alldata", async (req, res) => {
 });
 
 myapp.post("/registor", async (req, res) => {
-  const { fullname, email, pass, dob, purl, gender } = req.body;
+  const { fullname, email, pass } = req.body;
   const adduser = new myschimatype({
     fullname,
     email,
-    pass,
-    dob,
-    purl,
-    gender,
+    pass
   });
   await adduser.save();
   res
